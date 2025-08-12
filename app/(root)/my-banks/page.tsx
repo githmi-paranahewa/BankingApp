@@ -1,5 +1,6 @@
 import BankCard from '@/components/ui/BankCard';
 import HeaderBox from '@/components/ui/HeaderBox'
+import { Pagination } from '@/components/ui/Pagination';
 import { getAccount, getAccounts } from '@/lib/actions/bank.action';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
 import React from 'react'
@@ -11,7 +12,16 @@ async function MyBanks({searchParams}: SearchParamProps) {
       const accounts = await getAccounts({ userId: loggedIn.$id });
       if (!loggedIn) {
         return;
-      }    
+      }   
+      const rowsPerPage = 10;
+    const totalPages = Math.ceil(accounts?.data.length / rowsPerPage);
+    const indexOfLastAccount = currentPage * rowsPerPage;
+    const indexOfFirstAccount = indexOfLastAccount - rowsPerPage;
+    
+    const currentAccounts = accounts?.data.slice(
+      indexOfFirstAccount, indexOfLastAccount
+    )
+ 
   return (
     <section className='flex'>
       <div className='my-banks'>
@@ -25,7 +35,7 @@ async function MyBanks({searchParams}: SearchParamProps) {
           Your Cards
         </h2>
         <div className='flex flex-wrap gap-6'>
-          {accounts && accounts.data.map((a:Account)=>(
+          {currentAccounts && currentAccounts?.map((a:Account)=>(
               <BankCard 
                 key={a.id}
                 account={a}
@@ -33,6 +43,11 @@ async function MyBanks({searchParams}: SearchParamProps) {
               />
           ))}
         </div>
+        {totalPages > 1 && (
+              <div className="my-4 w-full">
+                  <Pagination totalPages={totalPages} page={currentPage} />
+              </div>)}
+
       </div>
       </div>
     </section>

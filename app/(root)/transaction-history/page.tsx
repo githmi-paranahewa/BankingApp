@@ -21,14 +21,14 @@ async function TransactionHistory({searchParams}: SearchParamProps) {
     const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
   
     const account = await getAccount({ appwriteItemId })
-
+    const transactions = account?.transactions;
     const rowsPerPage = 10;
-    const totalPages = Math.ceil(account?.length / rowsPerPage);
+    const totalPages = Math.ceil(transactions.length / rowsPerPage);
 
     const indexOfLastTransaction = currentPage * rowsPerPage;
     const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage;
-
-    const currentTransactions = account?.transactions.slice(
+    
+    const currentTransactions = transactions.slice(
       indexOfFirstTransaction, indexOfLastTransaction
     )
   
