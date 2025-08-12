@@ -36,7 +36,7 @@ const Copy = ({ title }: { title: string }) => {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          stroke-linecap="round"
+          strokeLinecap="round"
           strokeLinejoin="round"
           className="mr-2 size-4"
         >
